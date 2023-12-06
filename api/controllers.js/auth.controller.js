@@ -1,7 +1,8 @@
 import User from "../modules/user.model.js";
 import bcryptjs from "bcryptjs";
+import { errorhandler } from "../utils/error.js";
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
 
   const hashpassword = bcryptjs.hashSync(password, 10);
@@ -10,6 +11,6 @@ export const signup = async (req, res) => {
     await newUser.save();
     res.status(201).json("User created successfuly");
   } catch (error) {
-    res.status(500).json(error.message);
+    errorhandler(550, "Error from the function");
   }
 };
