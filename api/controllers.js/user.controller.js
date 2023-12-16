@@ -40,18 +40,9 @@ export const updateUser = async (req, res, next) => {
 };
 
 export const deleteUser = async (req, res, next) => {
-  if (req.user.id !== req.params.id)
-    return next(
-      errorhandler(403, "You only allowed to delete your own account")
-    );
-
   try {
-    await User.findByIdAndDelete(req.params.id);
-
-    res
-      .status(200)
-      .clearCookie("access_token")
-      .json("User successfully deleted");
+    if (req.user.id !== req.params.id)
+      return next(errorhandler(403, "You can only delte your own account!"));
   } catch (error) {
     next(error);
   }
